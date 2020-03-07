@@ -1,4 +1,4 @@
-version: 3.7
+version: "3.7"
 services:
   postgres-dev:
     image: postgres:12.2-alpine
@@ -6,6 +6,6 @@ services:
       POSTGRES_USER: rails
       POSTGRES_PASSWORD: password
   rails:
-    image: ruby:2.7.0-alpine3.11
+    build: ./images/ruby
   redis:
     image: redis
