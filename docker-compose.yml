@@ -5,12 +5,15 @@ services:
     environment:
       POSTGRES_USER: rails
       POSTGRES_PASSWORD: password
-  rails:
+  web:
     build: ./images/ruby
     volumes:
       - type: bind
         source: ./www
         target: /var/www
-    working_dir: /var/www
+    working_dir: /var/www/first_app
+    ports:
+      - 3000:3000
+    command: rails s
   redis:
     image: redis
