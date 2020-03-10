@@ -13,7 +13,7 @@ services:
         target: /var/www
     working_dir: /var/www/first_app
     ports:
-      - 3000:3000
-    command: rails s
+      - "3000:3000"
+    command: ash -c "bundle install && rails s -b 0.0.0.0"
   redis:
     image: redis
