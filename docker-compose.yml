@@ -5,15 +5,38 @@ services:
     environment:
       POSTGRES_USER: rails
       POSTGRES_PASSWORD: password
-  web:
+  backend:
     build: ./images/ruby
     volumes:
       - type: bind
         source: ./www
         target: /var/www
-    working_dir: /var/www/first_app
+      - bundle_install:/usr/local/bundle
+      - cache:/cache
+    working_dir: /var/www/
     ports:
       - "3000:3000"
     command: ash -c "bundle install && rails s -b 0.0.0.0"
+    environment:
+      - WEBPACKER_DEV_SERVER_HOST=webpacker
+      - SPROCKETS_CACHE=/cache
+  webpacker:
+    build: ./images/ruby
+    volumes:
+      - type: bind
+        source: ./www
+        target: /var/www
+      - bundle_install:/usr/local/bundle
+    working_dir: /var/www/
+    ports:
+      - '3035:3035'
+    command: ./bin/webpack-dev-server
+    environment:
+      - WEBPACKER_DEV_SERVER_HOST=0.0.0.0
+    depends_on:
+      - backend
   redis:
     image: redis
+volumes: 
+  bundle_install:
+  cache:
